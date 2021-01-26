@@ -808,6 +808,12 @@ AP_InertialSensor::detect_backends(void)
         ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_NAME), ROTATION_ROLL_180));
         break;
 
+    case AP_BoardConfig::PX4_BOARD_KERLOUDMINI:
+        _fast_sampling_mask.set_default(3);
+        ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_ICM20602_NAME), ROTATION_ROLL_180));
+        ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_ICM20689_NAME), ROTATION_ROLL_180));
+        break;
+
     case AP_BoardConfig::PX4_BOARD_AUAV21:
         // AUAV2.1 uses ICM20608 on the ACCEL_MAG device and a MPU9250 on the old MPU6000 CS line
         _fast_sampling_mask.set_default(3);

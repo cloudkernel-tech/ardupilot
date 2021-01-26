@@ -101,6 +101,7 @@ void AP_BoardConfig::board_setup_drivers(void)
     case PX4_BOARD_SP01:
     case PX4_BOARD_PIXRACER:
     case PX4_BOARD_PHMINI:
+    case PX4_BOARD_KERLOUDMINI:
     case PX4_BOARD_AUAV21:
     case PX4_BOARD_PH2SLIM:
     case VRX_BOARD_BRAIN51:
@@ -219,6 +220,7 @@ static bool check_ms5611(const char* devname) {
 #define MPU_WHOAMI_MPU9250  0x71
 #define MPU_WHOAMI_ICM20608 0xaf
 #define MPU_WHOAMI_ICM20602 0x12
+#define MPU_WHOAMI_ICM20689 0x98
 
 #define LSMREG_WHOAMI 0x0f
 #define LSM_WHOAMI_LSM303D 0x49
@@ -337,6 +339,11 @@ void AP_BoardConfig::board_autodetect(void)
         // classic or upgraded Pixhawk1
         state.board_type.set(PX4_BOARD_PIXHAWK);
         hal.console->printf("Detected Pixhawk\n");
+    } else if ( spi_check_register("icm20602", MPUREG_WHOAMI, MPU_WHOAMI_ICM20602) &&
+                spi_check_register("icm20689", MPUREG_WHOAMI, MPU_WHOAMI_ICM20689) ) {
+        // kerloud mini
+        state.board_type.set(PX4_BOARD_KERLOUDMINI);
+        hal.console->printf("Detected Kerloud mini\n");
     } else {
         sensor_config_error("Unable to detect board type");
     }

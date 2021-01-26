@@ -924,6 +924,16 @@ void Compass::_detect_backends(void)
         ADD_BACKEND(DRIVER_AK8963, AP_Compass_AK8963::probe_mpu9250(0, ROTATION_ROLL_180));
         break;
 
+    case AP_BoardConfig::PX4_BOARD_KERLOUDMINI:
+
+        ADD_BACKEND(DRIVER_QMC5883L, AP_Compass_QMC5883L::probe(0, true, ROTATION_YAW_90));
+
+        FOREACH_I2C_INTERNAL(i) {
+            ADD_BACKEND(DRIVER_IST8310, AP_Compass_IST8310::probe(GET_I2C_DEVICE(i, HAL_COMPASS_IST8310_I2C_ADDR),
+                                                                  false, ROTATION_ROLL_180_YAW_270));
+        }
+        break;
+
     case AP_BoardConfig::PX4_BOARD_AUAV21:
         ADD_BACKEND(DRIVER_AK8963, AP_Compass_AK8963::probe_mpu9250(0, ROTATION_ROLL_180_YAW_90));
         break;

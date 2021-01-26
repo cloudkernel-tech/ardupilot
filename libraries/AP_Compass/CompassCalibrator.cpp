@@ -899,7 +899,12 @@ bool CompassCalibrator::calculate_orientation(void)
         return true;
     }
 
-    if (!_is_external || !_fix_orientation) {
+    //fix internal compass calibration bug
+    if (!_is_external && pass)
+    {
+        return true;
+    }
+    else if (!_is_external || !_fix_orientation) {
         // we won't change the orientation, but we set _orientation
         // for reporting purposes
         _orientation = besti;
